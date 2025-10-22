@@ -13,7 +13,7 @@ dict_header_format = {
 
 # Cell Format for numbers with 1000s separator
 dict_number_format = {
-    'num_format': '$ #,##0',
+    'num_format': '#,##0',
     'border': 1,
     'align': 'center',
     'valign': 'vcenter'
@@ -62,6 +62,18 @@ dict_totals_index_format = {
 dict_total_currency_format = {
     'bold': True,
     'num_format': '$ #,##0.00',
+    'border': 1,
+    'top': 6,
+    'bottom': 6,
+    'align': 'center',
+    'valign': 'vcenter',
+    'bg_color': '#92d050'
+}
+
+# Cell Format for Grand Total row's Numbers with 1000s separator
+dict_total_number_format = {
+    'bold': True,
+    'num_format': '#,##0',
     'border': 1,
     'top': 6,
     'bottom': 6,

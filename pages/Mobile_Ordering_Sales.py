@@ -66,12 +66,12 @@ if col2.button("Generate Report"):
         mo_df = df[df["POS"] == "Mobile"]
         oth_df = df[df["POS"] != "Mobile"]
     
-        final_sales_data, final_trxns_data = aggregate_sales(mo_df, oth_df, unique_units)
-    
+        final_sales_data, final_trxns_data = aggregate_sales(mo_df, oth_df, unique_units, show_patrons=True)
+
         final_sales_data = post_process_totals(final_sales_data)
         if show_patrons:
             final_trxns_data = post_process_totals(final_trxns_data)
-
+        
         output = export_to_excel_report(
             final_sales_data,
             final_trxns_data,

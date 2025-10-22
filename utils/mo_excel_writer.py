@@ -19,7 +19,8 @@ from utils.mo_excel_formats import (
     dict_totals_index_format,
     dict_total_currency_format,
     dict_total_percent_format,
-    dict_merge_format
+    dict_merge_format,
+    dict_total_number_format
 )
 
 formats = {}
@@ -34,6 +35,7 @@ def _add_formats(workbook):
     formats['total_currency_format'] = workbook.add_format(dict_total_currency_format)
     formats['total_percent_format'] = workbook.add_format(dict_total_percent_format)
     formats['merge_format'] = workbook.add_format(dict_merge_format)
+    formats['total_number_format'] = workbook.add_format(dict_total_number_format)
 
 def figure_to_img_bytes(figure):
     img_bytes = BytesIO()
@@ -124,6 +126,8 @@ def export_to_excel_report(sales_df, trxns_df, filename, unit_name, show_patrons
                 is_sales = False
             )
 
+            sheet_trxns.merge_range('C2:H2', f'{unit_name} Mobile-Ordering Patrons Report', formats['merge_format'])
+
     output.seek(0)
     return output
 
@@ -149,7 +153,10 @@ def _write_formatted_sheet(
             col_name = df.columns[j]
             
             if col_name in ['Total', 'Mobile', 'Kiosk + Register']:
-                fmt = (formats['currency_format'] if (i+1) < len_df else formats['total_currency_format']) if is_sales else formats['number_format']  
+                if is_sales:
+                    fmt = formats['currency_format'] if (i+1) < len_df else formats['total_currency_format']
+                else:
+                    fmt = formats['number_format'] if (i+1) < len_df else formats['total_number_format']  
             else:
                 fmt = formats['percent_format'] if (i+1) < len_df else formats['total_percent_format']
                 value = value / 100 if value > 1 else value
