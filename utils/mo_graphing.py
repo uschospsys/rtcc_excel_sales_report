@@ -5,16 +5,23 @@ import matplotlib.ticker as ticker
 import numpy as np
 
 # Pie Chart
-def generate_pie_chart(df, label="Grand Total Sales"):
-    mo_percent = df['MO% of Total'] 
-    sizes = [mo_percent, 100-mo_percent]
-    pie_lab = ["Mobile", "Kiosk + Register"]
+def generate_pie_chart(df, label="Grand Total Sales", split_kiosks=False):
+    if split_kiosks:
+        sizes = [df['MO%'], df['Register%'], df['Kiosk%']]
+        pie_lab = ["Mobile", "Register", "Kiosk"]
+
+        mask = [0 if x == 0.00 else 1 for x in sizes]
+        sizes = [sizes[i] for i, _ in enumerate(mask) if mask[i]]
+        pie_lab = [pie_lab[i] for i, _ in enumerate(mask) if mask[i]]
+    else:
+        mo_percent = df['MO% of Total'] 
+        sizes = [mo_percent, 100-mo_percent]
+        pie_lab = ["Mobile", "Kiosk + Register"]
 
     fig, ax = plt.subplots(figsize=(10, 7))
-    # plt.figure(figsize=(10,7))
     ax.pie(
         sizes, labels=pie_lab, autopct="%1.2f%%",
-        shadow=True, explode=(0.05,0)
+        shadow=False, explode=[0]*len(sizes)
     )
     ax.set_title(label)
 
@@ -23,22 +30,32 @@ def generate_pie_chart(df, label="Grand Total Sales"):
     return fig
 
 # Bar Chart
-def plot_unit_channel_sales(df, is_sales=True, unit_name="x"):
+def plot_unit_channel_sales(df, is_sales=True, unit_name="x", split_kiosks=False):
     df = df.copy()
 
     units = df.index.tolist()
     mobile = df['Mobile'].values
-    kiosk = df['Kiosk + Register'].values
+
+    if split_kiosks:
+        kiosk = df['Kiosk'].values
+        register = df['Register'].values
+    else:
+        kiosk = df['Kiosk + Register'].values
     total = df['Total'].values
 
     x = np.arange(len(units))
-    width = 0.20
+    width = 0.48 if split_kiosks else 0.20
 
     fig, ax = plt.subplots(figsize=(15, 6))
 
     # Bars for Mobile and (Kiosk + Register)
-    bars_mobile = ax.bar(x - width/2, mobile, width, label='Mobile', color='#1f77b4')
-    bars_kiosk = ax.bar(x + width/2, kiosk, width, label='Kiosk + Register', color='#ff7f0e')
+    if split_kiosks:
+        bars_mobile = ax.bar(x - width/3, mobile, width/3, label='Mobile', color='#1f77b4')
+        bars_kiosk = ax.bar(x, kiosk, width/3, label='Kiosk', color='green')
+        bars_register = ax.bar(x + width/3, register, width/3, label='Register', color='#ff7f0e')
+    else:
+        bars_mobile = ax.bar(x - width/2, mobile, width, label='Mobile', color='#1f77b4')
+        bars_kiosk = ax.bar(x + width/2, kiosk, width, label='Kiosk + Register', color='#ff7f0e')
     
     # Total sales text
     ax.set_xticks(x)
