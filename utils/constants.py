@@ -1,5 +1,4 @@
 # Defining constants that will be used all across the app
-
 categories = [
     # RTCC Food Court
     "Burger Crush",

@@ -18,19 +18,49 @@ def load_excel(file):
 st.set_page_config(page_title="Mobile-Ordering Sales", layout = "wide")
 st.title("Mobile Ordering Sales Comparison")
 
-col1, col2, col3 = st.columns([1, 1, 2])
-unit_name = col1.selectbox(
-    "Select the Unit for this report?",
-    ("RTCC Food Court", "Seeds Mktplace")
-)
-show_patrons = col2.selectbox(
-    "Show Patron Counts in report?",
-    (True, False), index = 1
-)
-# show_patrons = col2.toggle("Show Patrons Count in report?")
+unit_options = {
+    0: "RTCC Food Court",
+    1: "Seeds Mktplace"
+}
 
-output_file_name = col3.text_input("What's the output file name?", f"{unit_name} September 2025 - Mobile Ordering Split Report.xlsx")
-st.success(f"The current output file name is: {output_file_name}")
+col1, col2, col3, col4 = st.columns([2, 1, 2, 2])
+with col1:
+    unit_selection = st.pills(
+        "Select the Unit for this report?",
+        options = unit_options,
+        format_func = lambda opt: unit_options[opt],
+        selection_mode = 'single',
+        default = 0
+    )
+
+with col2:
+    show_patrons_choice = st.segmented_control(
+        "Show Patron Counts?",
+        options = ["No", "Yes"],
+        selection_mode = "single",
+        default = "No"
+    )
+
+with col3:
+    split_kiosks_choice = st.radio(
+        "Display Non-MO sales as?",
+        ["Merged", "Split"],
+        captions = [
+            "[Kiosks + Registers]",
+            "[Kiosks] and [Registers]"
+        ],
+        horizontal = True
+    )
+
+with col4:
+    hide_units = st.select_slider(
+        "Units Display?",
+        options = ["Hide Units with no Sales", "Show all Units"]
+    )
+
+# show_patrons = col2.toggle("Show Patrons Count in report?")
+unit_name = None if unit_selection is None else unit_options[unit_selection]
+output_file_name = st.text_input("What's the output file name?", f"{unit_name} Mobile Ordering Split Report.xlsx")
 
 st.divider()
 
@@ -60,24 +90,23 @@ if col2.button("Generate Report"):
         st.write(f"Found {len(unique_units)} Units in {unit_name}")
         with st.expander(f"View Unique {unit_name} Units"):
             st.write(unique_units.tolist())
-    
-    
-        # Split into Mobile and non-Mobile (Kiosk + Registers)
-        mo_df = df[df["POS"] == "Mobile"]
-        oth_df = df[df["POS"] != "Mobile"]
-    
-        final_sales_data, final_trxns_data = aggregate_sales(mo_df, oth_df, unique_units, show_patrons=True)
 
-        final_sales_data = post_process_totals(final_sales_data)
+        split_kiosks = True if split_kiosks_choice == "Split" else False
+        show_patrons = True if show_patrons_choice == "Yes" else False
+        
+        final_sales_data, final_trxns_data = aggregate_sales(df, unique_units, show_patrons=show_patrons, split_kiosks=split_kiosks)
+
+        final_sales_data = post_process_totals(final_sales_data, hide_units, split_kiosks)
         if show_patrons:
-            final_trxns_data = post_process_totals(final_trxns_data)
+            final_trxns_data = post_process_totals(final_trxns_data, hide_units, split_kiosks)
         
         output = export_to_excel_report(
             final_sales_data,
             final_trxns_data,
             filename = output_file_name,
             unit_name = unit_name,
-            show_patrons = show_patrons
+            show_patrons = show_patrons,
+            split_kiosks = split_kiosks
         )
     
         st.download_button(

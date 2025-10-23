@@ -9,8 +9,8 @@ from utils.processing import (
     generate_excel
 )
 
-st.set_page_config(page_title="Category Mapper", layout="wide")
-st.title("RTCC Category Mapper & Excel Generator")
+st.set_page_config(page_title="RTCC-Seeds Unit-wise Category Split", layout="wide")
+st.title("RTCC Food Court and Seeds Marketplace Unit-wise Category Split")
 
 # Upload Excel
 uploaded_file = st.file_uploader("Upload Excel File", type=["xls", "xlsx"])
