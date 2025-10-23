@@ -1,4 +1,5 @@
 # Utilities for writing to an Excel Sheet
+import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas import ExcelWriter
@@ -42,10 +43,19 @@ def figure_to_img_bytes(figure):
     img_bytes.seek(0)
     return img_bytes
 
+def filter_col_if_empty(df):
+    last_row = df.iloc[-1]
+    cols_to_drop = last_row[last_row == 0].index
+    return df.drop(columns=cols_to_drop)
+
 def export_to_excel_report(sales_df, trxns_df, filename, unit_name, show_patrons=False, split_kiosks=False):
+
+    sales_df = filter_col_if_empty(sales_df)
+
+    st.dataframe(sales_df)
     
     # Save chart images
-    fig_pie = generate_pie_chart(sales_df.iloc[-1], "Grand Total Sales", split_kiosks=split_kiosks)
+    fig_pie = generate_pie_chart(sales_df.iloc[-1:], "Grand Total Sales", split_kiosks=split_kiosks)
     sales_pie_img = figure_to_img_bytes(fig_pie)
     # plt.savefig("sales_pie.png", bbox_inches='tight')
     plt.close(fig_pie)
@@ -56,7 +66,9 @@ def export_to_excel_report(sales_df, trxns_df, filename, unit_name, show_patrons
     plt.close(fig_bar)
 
     if show_patrons:
-        fig_pie_t = generate_pie_chart(trxns_df.iloc[-1], "Grand Total Transactions", split_kiosks=split_kiosks)
+        trxns_df = filter_col_if_empty(trxns_df)
+        
+        fig_pie_t = generate_pie_chart(trxns_df.iloc[-1:], "Grand Total Transactions", split_kiosks=split_kiosks)
         trxn_pie_img = figure_to_img_bytes(fig_pie_t)
         # plt.savefig("trxns_pie.png", bbox_inches='tight')
         plt.close(fig_pie_t)
@@ -170,7 +182,10 @@ def _write_formatted_sheet(
     # === Set Column Widths ===
     total_cols = len(df.columns) + 1  # +1 for index column
     for j in range(total_cols):
-        sheet.set_column(table_start_col + j, table_start_col + j, 15)  # Adjust width as needed
+        if j == 0:
+            sheet.set_column(table_start_col + j, table_start_col + j, 25)  # Adjust width as needed for Unit Index Column
+        else:
+            sheet.set_column(table_start_col + j, table_start_col + j, 15)  # Adjust width as needed for Unit Index Column
 
     # === Insert Pie Chart ===
     sheet.insert_image(pie_start_row, pie_start_col, "pie_image.png", {'image_data': pie_image, 'x_scale': 0.7, 'y_scale': 0.7})

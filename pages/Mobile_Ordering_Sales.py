@@ -20,7 +20,16 @@ st.title("Mobile Ordering Sales Comparison")
 
 unit_options = {
     0: "RTCC Food Court",
-    1: "Seeds Mktplace"
+    1: "Seeds Mktplace",
+    2: "USC Cafes"
+}
+
+cafe_options = {
+    0: "UPC Trojan Grounds Illy",
+    1: "Coffee Bean & Tea Leaf",
+    2: "W. Annenberg Cafe",
+    3: "HSC Illy",
+    4: "Tutor Hall Cafe"
 }
 
 col1, col2, col3, col4 = st.columns([2, 1, 2, 2])
@@ -32,6 +41,14 @@ with col1:
         selection_mode = 'single',
         default = 0
     )
+    if unit_selection == 2:
+        cafes_unit_selection = st.pills(
+            "Select the Cafes for this report?",
+            options = cafe_options,
+            format_func = lambda opt: cafe_options[opt],
+            selection_mode = 'multi',
+            default = None
+        )
 
 with col2:
     show_patrons_choice = st.segmented_control(
@@ -60,7 +77,7 @@ with col4:
 
 # show_patrons = col2.toggle("Show Patrons Count in report?")
 unit_name = None if unit_selection is None else unit_options[unit_selection]
-output_file_name = st.text_input("What's the output file name?", f"{unit_name} Mobile Ordering Split Report.xlsx")
+output_file_name = st.text_input("What's the output file name?", f"{unit_name} Mobile Ordering Report.xlsx")
 
 st.divider()
 
@@ -84,7 +101,12 @@ if col2.button("Generate Report"):
     else:
         # Data Clean-up
         df = df[df["item_number"] != "DISCOUNT"]
-    
+
+        # Filter for USC Cafes
+        if unit_name == 'USC Cafes':
+            cafes_filter = df['location_name'].isin([cafe_options[x] for x in cafes_unit_selection])
+            df = df[cafes_filter]
+            
         unique_units = np.unique(df["Unit"])
         st.divider()
         st.write(f"Found {len(unique_units)} Units in {unit_name}")
