@@ -3,7 +3,6 @@ import numpy as np
 from xlsxwriter.utility import xl_col_to_name
 from io import BytesIO
 
-
 def extract_categories(df, categories):
     full_categories = ["Category - " + cat for cat in categories]
     cat_idx = []

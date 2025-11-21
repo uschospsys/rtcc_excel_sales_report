@@ -1,5 +1,4 @@
 # Excel Cell Formatting Options
-
 # Table Header Format
 dict_header_format = {
     'bold': True,

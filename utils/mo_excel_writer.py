@@ -1,5 +1,4 @@
 # Utilities for writing to an Excel Sheet
-
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas import ExcelWriter
