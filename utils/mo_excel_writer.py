@@ -23,6 +23,12 @@ from utils.mo_excel_formats import (
     dict_total_number_format
 )
 
+from utils.giant_report.mo_all_units_excel_writer import (
+    write_giant_report
+)
+
+from models.Tender_Data import Tender_Data
+
 formats = {}
 
 def _add_formats(workbook):
@@ -48,37 +54,41 @@ def filter_col_if_empty(df):
     cols_to_drop = last_row[last_row == 0].index
     return df.drop(columns=cols_to_drop)
 
-def export_to_excel_report(sales_df, trxns_df, filename, unit_name, show_patrons=False, split_kiosks=False):
+def export_to_excel_report(sales_df, trxns_df, filename, unit_name, month='December 25', show_patrons=False, split_kiosks=False, giant_report=False, tender_data=None):
 
     sales_df = filter_col_if_empty(sales_df)
 
     st.dataframe(sales_df)
+
+    if not giant_report:
+        # Save chart images
+        fig_pie = generate_pie_chart(sales_df.iloc[-1:], "Grand Total Sales", split_kiosks=split_kiosks)
+        sales_pie_img = figure_to_img_bytes(fig_pie)
+        # plt.savefig("sales_pie.png", bbox_inches='tight')
+        plt.close(fig_pie)
     
-    # Save chart images
-    fig_pie = generate_pie_chart(sales_df.iloc[-1:], "Grand Total Sales", split_kiosks=split_kiosks)
-    sales_pie_img = figure_to_img_bytes(fig_pie)
-    # plt.savefig("sales_pie.png", bbox_inches='tight')
-    plt.close(fig_pie)
+        fig_bar = plot_unit_channel_sales(sales_df.iloc[:-1], True, unit_name, split_kiosks=split_kiosks)
+        sales_bar_img = figure_to_img_bytes(fig_bar)
+        # plt.savefig("sales_bar.png", bbox_inches='tight')
+        plt.close(fig_bar)
 
-    fig_bar = plot_unit_channel_sales(sales_df.iloc[:-1], True, unit_name, split_kiosks=split_kiosks)
-    sales_bar_img = figure_to_img_bytes(fig_bar)
-    # plt.savefig("sales_bar.png", bbox_inches='tight')
-    plt.close(fig_bar)
-
-    if show_patrons:
-        trxns_df = filter_col_if_empty(trxns_df)
+        if show_patrons:
+            trxns_df = filter_col_if_empty(trxns_df)
+            
+            fig_pie_t = generate_pie_chart(trxns_df.iloc[-1:], "Grand Total Transactions", split_kiosks=split_kiosks)
+            trxn_pie_img = figure_to_img_bytes(fig_pie_t)
+            # plt.savefig("trxns_pie.png", bbox_inches='tight')
+            plt.close(fig_pie_t)
         
-        fig_pie_t = generate_pie_chart(trxns_df.iloc[-1:], "Grand Total Transactions", split_kiosks=split_kiosks)
-        trxn_pie_img = figure_to_img_bytes(fig_pie_t)
-        # plt.savefig("trxns_pie.png", bbox_inches='tight')
-        plt.close(fig_pie_t)
-    
-        fig_bar_t = plot_unit_channel_sales(trxns_df.iloc[:-1], False, unit_name, split_kiosks=split_kiosks)
-        trxn_bar_img = figure_to_img_bytes(fig_bar_t)
-        # plt.savefig("trxns_bar.png", bbox_inches='tight')
-        plt.close(fig_bar_t)
+            fig_bar_t = plot_unit_channel_sales(trxns_df.iloc[:-1], False, unit_name, split_kiosks=split_kiosks)
+            trxn_bar_img = figure_to_img_bytes(fig_bar_t)
+            # plt.savefig("trxns_bar.png", bbox_inches='tight')
+            plt.close(fig_bar_t)
 
     # Start Excel writing
+    if giant_report:
+        return write_giant_report(sales_df, tender_data, unit_name, month, split_kiosks)
+        
     output = BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
         workbook = writer.book
@@ -160,6 +170,8 @@ def _write_formatted_sheet(
     
     # === Write Index and Data with Proper Formatting ===
     for i, (index_label, row) in enumerate(df.iterrows()):
+        st.write(f"Index Label: {index_label}")
+        index_label = index_label.split("_")[1] if '_' in index_label else index_label
         sheet.write(table_start_row + i + 1, table_start_col, index_label, formats['index_format'] if (i+1) < len_df else formats['totals_index_format'])
         
         for j, value in enumerate(row):

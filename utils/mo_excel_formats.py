@@ -7,7 +7,8 @@ dict_header_format = {
     'align': 'center',
     'valign': 'vcenter',
     'bg_color': '#D9E1F2',  # Light blue background
-    'font_color': '#000000'
+    'font_color': '#000000',
+    'text_wrap': True
 }
 
 # Cell Format for numbers with 1000s separator
@@ -54,7 +55,8 @@ dict_totals_index_format = {
     'align': 'center',
     'valign': 'vcenter',
     'bg_color': '#92d050',
-    'font_color': '#000000'
+    'font_color': '#000000',
+    'text_wrap': True
 }
 
 # Cell Format for Grand Total row's Currency Columns
