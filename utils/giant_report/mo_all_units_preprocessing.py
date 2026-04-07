@@ -44,6 +44,8 @@ def unit_selection(row):
         return 'HSC_HSC Taco Taco'
     elif 'HSC Takeover' in row['item_cat_name']:
         return 'HSC_HSC Takeover'
+    elif 'HSC Food Court' in row['location_name']:
+        return 'HSC_HSC Retail'
     
     # UPC Units
     elif 'UPC Trojan Grounds Illy' in row['location_name']:
@@ -92,31 +94,35 @@ def unit_selection(row):
 
     # Seeds Marketplace
     elif 'Seeds Breakfast Meal Plan' in row['item_cat_name']:
-        return 'Seeds_Breakfast'
+        return 'Seeds_Seeds Breakfast'
     elif 'Seeds EatWell Breakfast' in row['item_cat_name']:
-        return 'Seeds_Breakfast'
+        return 'Seeds_Seeds Breakfast'
     elif 'Seeds Breakfast' in row['item_cat_name']:
-        return 'Seeds_Breakfast'
+        return 'Seeds_Seeds Breakfast'
     elif 'Seeds Sandwiches Meal Plan' in row['item_cat_name']:
-        return 'Seeds_Sandwich'
+        return 'Seeds_Seeds Sandwich'
     elif 'Seeds Sandwich' in row['item_cat_name']:
-        return 'Seeds_Sandwich'
+        return 'Seeds_Seeds Sandwich'
     elif 'Seeds Salads Meal Plan' in row['item_cat_name']:
-        return 'Seeds_Salad'
+        return 'Seeds_Seeds Salad'
     elif 'Seeds Salads' in row['item_cat_name']:
-        return 'Seeds_Salad'
+        return 'Seeds_Seeds Salad'
     elif 'Seeds EatWell Salads' in row['item_cat_name']:
-        return 'Seeds_Salad'
+        return 'Seeds_Seeds Salad'
     elif 'Seeds Poke Bowls' in row['item_cat_name']:
-        return 'Seeds_Poke Bowls'
+        return 'Seeds_Seeds Poke Bowls'
     elif 'Retail' in row['item_cat_name']:
-        return 'Seeds_Retail'
+        return 'Seeds_Seeds Retail'
     elif 'Seeds Original Bowls' in row['item_cat_name']:
         return 'Seeds_Bowls at Seeds'
     elif 'Seeds Original Bowls Meal Plan' in row['item_cat_name']:
         return 'Seeds_Bowls at Seeds'
+    elif 'Seeds Pop Up' in row['item_cat_name']:
+        return 'Seeds_Seeds Pop Up'
+    elif 'Seeds Cafe' in row['item_cat_name']:
+        return 'Seeds_Seeds Cafe'
     elif 'Seeds Marketplace' in row['location_name']:
-        return 'Seeds_Seeds Retail'
+        return 'Seeds_Seeds Grab N Go'
 
     else:
         return None

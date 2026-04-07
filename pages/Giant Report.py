@@ -27,7 +27,7 @@ from models.Retail_All_Data import Retail_All_Data
 
 @st.cache_data
 def load_excel(file, sheet_name=[0]):
-    return pd.read_excel(file, sheet_name=sheet_name)
+    return pd.read_excel(file, sheet_name=sheet_name,engine="calamine")
 
 @st.cache_data
 def preprocess_excel(df):

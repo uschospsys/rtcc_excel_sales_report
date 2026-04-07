@@ -10,6 +10,7 @@ categories = [
     "RTCC Bowls Express",
     "RTCC Pop Up",
     "Slice Shop",
+    "RTCC Upstairs",
 
     # Panda Express
     "Panda Express",
@@ -40,6 +41,7 @@ categories = [
     "Seeds Special",
     "Seeds CK Grab and Go",
     "Seeds CK Meal Plan",
+    "Seeds Cafe",
     
     # Seeds Meal Plan
     "Seeds Breakfast Meal Plan",
@@ -58,6 +60,7 @@ default_sheet_categories = {
     "Taco Taco": ["Taco Taco", "Taco Taco Kiosk Reg"],
     "Panda Express": ["Panda Express", "Panda Express Catering", "Panda Express Register"],
     "Bowls": ["RTCC Bowls", "RTCC Bowls Express"],
+    "RTCC Upstairs": ["RTCC Upstairs"],
     "RTCC Pop Up": ["RTCC Pop Up"],
     "Slice Shop": ["Slice Shop"],
     "Seeds Retail": ["Retail", "Seeds Fruit", "Seeds Retail Kiosks"],
@@ -67,6 +70,7 @@ default_sheet_categories = {
     "Seeds Sandwiches": ["Seeds Sandwich"],
     "Seeds Desserts" : ["Seeds Desserts"],
     "Seeds Special": ["Seeds Special"],
+    "Seeds Cafe": ["Seeds Cafe"],
     "Seeds CK": ["Seeds CK Grab and Go"],
     "Seeds Meal Plan": ["Seeds Breakfast Meal Plan", "Seeds Fresh Grill Meal Plan", "Seeds Original Bowls Meal Plan", "Seeds Salads Meal Plan", "Seeds Sandwiches Meal Plan", "Seeds Positive Foods Meal Plan", "Seeds CK Meal Plan"],
 }

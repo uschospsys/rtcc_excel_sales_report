@@ -62,9 +62,9 @@ class Giant_Report():
                 ]
 
                 final_trxns_data.loc[unit] = [
-                    np.sum(tmp_mo_df["Checks"]),
-                    np.sum(tmp_k_df["Checks"]),
-                    np.sum(tmp_reg_df["Checks"]),
+                    np.sum(tmp_mo_df["item_qty"]),
+                    np.sum(tmp_k_df["item_qty"]),
+                    np.sum(tmp_reg_df["item_qty"]),
                     0, 0, 0, 0
                 ]
 
@@ -82,7 +82,7 @@ class Giant_Report():
             for pos in unique_pos:
                 temp_pos_df = df[df['POS'] == pos]
                 result_sales[pos] = np.sum(temp_pos_df['item_price'])
-                result_trxns[pos] = np.sum(temp_pos_df['Checks'])
+                result_trxns[pos] = np.sum(temp_pos_df['item_qty'])
 
             result_sales = self.compute_totals(result_sales)
             result_trxns = self.compute_totals(result_trxns)
@@ -145,7 +145,7 @@ class Giant_Report():
             sheet_retail.merge_range('B2:I2', f'USC Retail Mobile-Ordering Sales {datee} Report', formats['merge_format'])
     
             # Write the current Tender Report to Excel
-            table_start = 46
+            table_start = 50
             self._write_formatted_sheet_tenders(
                 sheet_retail,
                 workbook,
@@ -155,12 +155,12 @@ class Giant_Report():
                 is_sales=True,
                 split_kiosks = True
             )
-            sheet_retail.merge_range('B45:S45', f'USC Retail Tender Summary {datee} Report', formats['merge_format'])
+            sheet_retail.merge_range('B49:S49', f'USC Retail Tender Summary {datee} Report', formats['merge_format'])
 
             comp_table = self.build_sales_comp_table(sales_data1.final_sales, sales_data2.final_sales, month, year)
             st.dataframe(comp_table)
             # Write MO Report Comparison to Excel
-            table_start = 38
+            table_start = 42
             self._write_formatted_sheet(
                 sheet_retail,
                 workbook,
@@ -170,12 +170,12 @@ class Giant_Report():
                 is_sales=True,
                 split_kiosks = True
             )
-            sheet_retail.merge_range('B37:I37', f'USC Retail MO Sales {datee} Comparison Report', formats['merge_format'])
+            sheet_retail.merge_range('B41:I41', f'USC Retail MO Sales {datee} Comparison Report', formats['merge_format'])
 
             tender_comp_table = self.build_tender_comp_table(final_tender_data1.final_tender_sales, final_tender_data2.final_tender_sales, month, year)
             st.dataframe(tender_comp_table)
             # Write Tender Report Comparison to Excel
-            table_start = 64
+            table_start = 68
             self._write_formatted_sheet_tenders(
                 sheet_retail,
                 workbook,
@@ -185,7 +185,7 @@ class Giant_Report():
                 is_sales = True,
                 split_kiosks = True
             )
-            sheet_retail.merge_range('B63:S63', f'USC Retail Tender Summary {datee} Comparison Report', formats['merge_format'])
+            sheet_retail.merge_range('B67:S67', f'USC Retail Tender Summary {datee} Comparison Report', formats['merge_format'])
 
         # Residential Sheet
             # Write Current Customer Count Report
