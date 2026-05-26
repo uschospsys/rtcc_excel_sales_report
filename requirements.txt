@@ -1,7 +1,8 @@
-streamlit
+streamlit==1.45.1
 pandas
 numpy
 xlsxwriter
 openpyxl
 xlrd
 matplotlib
+python-calamine
