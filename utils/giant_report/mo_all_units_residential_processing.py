@@ -129,6 +129,9 @@ def get_aggregated_data(df):
         'To Go': 'To-Go'
     }, inplace=True)
     
+    # Bug-fix: Ensure both columns exist; if missing, fill them with 0
+    curr_year = curr_year.reindex(columns=['Dine-In', 'To-Go'], fill_value=0)
+
     curr_year['Total'] = curr_year['Dine-In'] + curr_year['To-Go']
     curr_year.loc['Grand Total'] = curr_year.sum(axis=0)
     curr_year['Dine-In %'] = (curr_year['Dine-In'] / curr_year['Total']) * 100.0
