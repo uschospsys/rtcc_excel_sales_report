@@ -124,6 +124,18 @@ def unit_selection(row):
     elif 'Seeds Marketplace' in row['location_name']:
         return 'Seeds_Seeds Grab N Go'
 
+    # Upstairs
+    elif 'UPT Poke Bowls' in row['item_cat_name']:
+        return 'Upstairs_Upstairs Poke Bowls'
+    elif 'UPT Ramen Bowls' in row['item_cat_name']:
+        return 'Upstairs_Upstairs Ramen Bowls'
+    elif 'UPT Sharetea' in row['item_cat_name']:
+        return 'Upstairs_Upstairs Sharetea Boba'
+    elif 'UPT CBTL' in row['item_cat_name']:
+        return 'Upstairs_Upstairs CBTL'
+    elif 'UPT Tacos' in row['item_cat_name']:
+        return 'Upstairs_Upstairs Tacos'
+
     else:
         return None
         
