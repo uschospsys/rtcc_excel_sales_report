@@ -49,7 +49,14 @@ categories = [
     "Seeds Original Bowls Meal Plan",
     "Seeds Salads Meal Plan",
     "Seeds Sandwiches Meal Plan",
-    "Seeds Positive Foods Meal Plan"
+    "Seeds Positive Foods Meal Plan",
+
+    # Upstairs
+    "UPT Poke Bowls",
+    "UPT Ramen Bowls",
+    "UPT Sharetea",
+    "UPT CBTL",
+    "UPT Tacos"
 ]
 
 
@@ -73,5 +80,10 @@ default_sheet_categories = {
     "Seeds Cafe": ["Seeds Cafe"],
     "Seeds CK": ["Seeds CK Grab and Go"],
     "Seeds Meal Plan": ["Seeds Breakfast Meal Plan", "Seeds Fresh Grill Meal Plan", "Seeds Original Bowls Meal Plan", "Seeds Salads Meal Plan", "Seeds Sandwiches Meal Plan", "Seeds Positive Foods Meal Plan", "Seeds CK Meal Plan"],
+    "Upstairs Poke Bowls": ["UPT Poke Bowls"],
+    "Upstairs Ramen Bowls": ["UPT Ramen Bowls"], 
+    "Upstairs Sharetea": ["UPT Sharetea"],
+    "Upstairs CBTL": ["UPT CBTL"],
+    "Upstairs Tacos": ["UPT Tacos"],
 }
 
