@@ -135,6 +135,8 @@ def unit_selection(row):
         return 'Upstairs_Upstairs CBTL'
     elif 'UPT Tacos' in row['item_cat_name']:
         return 'Upstairs_Upstairs Tacos'
+    elif 'UPT Late Night' in row['item_cat_name']:
+        return 'Upstairs_Upstairs Late Night'
 
     else:
         return None
