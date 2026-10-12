@@ -84,6 +84,6 @@ default_sheet_categories = {
     "Upstairs Ramen Bowls": ["UPT Ramen Bowls"], 
     "Upstairs Sharetea": ["UPT Sharetea"],
     "Upstairs CBTL": ["UPT CBTL"],
-    "Upstairs Tacos": ["UPT Tacos"],
+    "Upstairs Late Night": ["UPT Tacos", "UPT Late Night"],
 }
 
